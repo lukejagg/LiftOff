@@ -1,14 +1,34 @@
 # AI Packages
+import random
+
 import cv2
 import math
 from typing import Mapping
 import numpy as np
 import mediapipe as mp
 from test_data import NATE, BAD_NATE, DATA_SIZE
-#from network import model
+from network import model
 mp_drawing = mp.solutions.drawing_utils
 mp_drawing_styles = mp.solutions.drawing_styles
 mp_pose = mp.solutions.pose
+
+from subprocess import call
+
+import threading
+import pyttsx3
+engine = pyttsx3.init()
+
+class thread(threading.Thread):
+    def __init__(self, text):
+        threading.Thread.__init__(self)
+        self.text = text
+
+        # helper function to execute the threads
+
+    def run(self):
+        call(["python3", "speak.py", self.said])
+        #engine.say(self.text)
+        #engine.runAndWait()
 
 # Data
 # pose { pose_landmarks, pose_world_landmarks, segmentation_mask }
@@ -19,6 +39,10 @@ landmarks = None
 screen_landmarks = None
 
 print(f'Data Size: {DATA_SIZE} loaded')
+
+#engine.say("I will speak this text")
+#engine.runAndWait()
+
 
 # Util Methods
 _PRESENCE_THRESHOLD = 0.5
@@ -103,6 +127,29 @@ def sub(landmark1, landmark2):
 def average(a, b):
     return div(getPos(a) + getPos(b), 2)
 
+averages = [0,0,0,0,0,0]
+rate = 0.2
+
+ttsTexts = [None,
+         "Your feet are too close. Try to move them further out to a little more than shoulder width." ,
+         "Your feet are too far out. Try to move them a little closer. ",
+         "Do not round your back. Keep your back straight. ",
+         "Move your hands a little closer to the middle near shoulder width. ",
+         "Keep your back straight at the top of a rep. "]
+
+
+def doSpeak():
+    text = []
+    for index, val in enumerate(averages):
+        if val > 0.5 and ttsTexts[index] is not None:
+            text.append(ttsTexts[index])
+    said = "Your form is good. Keep it up! "
+    if len(text) > 0:
+        said = random.choice(text)
+
+    t = thread(said)
+    t.run()
+
 def predict(data, image):
     if len(data) != DATA_SIZE or (screen_landmarks is None):
         print("Needs data to predict...")
@@ -121,14 +168,31 @@ def predict(data, image):
     #screen_pos = (screen_pos[0] + delta[0] * 1 + 30 + 80, screen_pos[1] + delta[1] * 1)
     """
     shape = image.shape
-    screen_pos = (int(m.x * shape[1]), int(m.y * shape[0]))
+    screen_pos = (int(m.x * shape[1] + 50), int(m.y * shape[0] + 15))
 
     data = np.array(data).reshape((-1,1,DATA_SIZE))
     predictions = model.predict(data)
     out = predictions[0]
     print(f'Prediction: {out[0]:.2f}, {out[1]:.2f}')
 
-    cv2.putText(image, f'{out[0] > out[1] and "T-Posing" or "Boring"}', screen_pos, cv2.FONT_HERSHEY_DUPLEX, 1, (255,255,255), 1, cv2.LINE_AA)
+    for index, val in enumerate(out):
+        averages[index] = averages[index] + (val - averages[index]) * rate
+
+    nums = averages
+    texts = [None, "Move feet more out (shoulder width)", "Move feet closer together (shoulder width)", "Keep back straight (don't round your back)", "Move hands closer together", "Keep your back straight at the top"]
+    text = []
+    for index, val in enumerate(nums):
+        if val > 0.5 and texts[index] is not None:
+            text.append(texts[index])
+
+    for index, t in enumerate(text):
+        cv2.putText(image, t, (10, (index+1) * 30),
+                    cv2.FONT_HERSHEY_DUPLEX, 0.7, (40, 40, 240), 1, cv2.LINE_AA)
+
+    v = int(nums[0] * 255)
+    #cv2.putText(image, f'{out[0]:.2f}, {out[1]:.2f}, {out[2]:.2f}, {out[3]:.2f}, {out[4]:.2f}', screen_pos, cv2.FONT_HERSHEY_DUPLEX, 1, (255,255,255), 1, cv2.LINE_AA)
+    cv2.putText(image, f'{nums[0]*100:.0f}%', screen_pos,
+                cv2.FONT_HERSHEY_DUPLEX, 0.8, (28, v, 255 - v), 1, cv2.LINE_AA)
 
     # Debug
     length = len(screen_landmarks)
@@ -164,6 +228,8 @@ def packData(list):
         data.append(point[1])
         data.append(point[2])
     return data
+
+doPredict = False
 
 # Tracking Workflow
 cam = cv2.VideoCapture(0)
@@ -218,7 +284,8 @@ with mp_pose.Pose(min_detection_confidence=0.75,min_tracking_confidence=0.25) as
             vertex = [(landmark)]
             draw(image, vertex, None, landmark_drawing_spec=mp_drawing_styles.DrawingSpec(color=mp_drawing.GREEN_COLOR), connection_drawing_spec=mp_drawing_styles.DrawingSpec())
 
-        #predict(data, image)
+        if doPredict:
+            predict(data, image)
 
         #cv2.imshow('LiftOff', image)#cv2.flip(image, 1))
         cv2.imshow('Liftoff', image)
@@ -234,9 +301,12 @@ with mp_pose.Pose(min_detection_confidence=0.75,min_tracking_confidence=0.25) as
         # if not input == 255:
         #     print(input & 0xFF)
         if input == 91:
-            print(data + ",")
+            print(str(data) + ",")
+            doSpeak()
             #print(f'{h[0]}\'{h[1]}"')
-        if input == ord('q') or input == 93:
+        if input == 93:
+            doPredict = not doPredict
+        if input == ord('q'):
             break
 
 cam.release()
