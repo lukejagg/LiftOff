@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="15bad59c-09ce-4620-9266-4650f45b484c" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/LiftOff.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+    <list default="true" id="15bad59c-09ce-4620-9266-4650f45b484c" name="Changes" comment="Detection model">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
@@ -24,14 +20,12 @@
     <file path="$PROJECT_DIR$/main.py">
       <ranges>
         <range start1="2" end1="2" start2="2" end2="6" changelist="d3135c19-bc9a-4e55-90f3-5a686edd2910" />
-        <range start1="4" end1="4" start2="8" end2="11" changelist="15bad59c-09ce-4620-9266-4650f45b484c" />
-        <range start1="9" end1="12" start2="16" end2="105" changelist="15bad59c-09ce-4620-9266-4650f45b484c" />
-        <range start1="13" end1="14" start2="106" end2="230" changelist="15bad59c-09ce-4620-9266-4650f45b484c" />
-        <range start1="15" end1="15" start2="231" end2="248" changelist="15bad59c-09ce-4620-9266-4650f45b484c" />
-        <range start1="18" end1="19" start2="251" end2="252" changelist="d3135c19-bc9a-4e55-90f3-5a686edd2910" />
-        <range start1="28" end1="28" start2="261" end2="288" changelist="15bad59c-09ce-4620-9266-4650f45b484c" />
-        <range start1="31" end1="33" start2="291" end2="300" changelist="15bad59c-09ce-4620-9266-4650f45b484c" />
-        <range start1="34" end1="35" start2="301" end2="317" changelist="15bad59c-09ce-4620-9266-4650f45b484c" />
+        <range start1="5" end1="6" start2="9" end2="10" changelist="15bad59c-09ce-4620-9266-4650f45b484c" />
+        <range start1="102" end1="104" start2="106" end2="112" changelist="15bad59c-09ce-4620-9266-4650f45b484c" />
+        <range start1="105" end1="106" start2="113" end2="119" changelist="15bad59c-09ce-4620-9266-4650f45b484c" />
+        <range start1="107" end1="108" start2="120" end2="121" changelist="15bad59c-09ce-4620-9266-4650f45b484c" />
+        <range start1="109" end1="110" start2="122" end2="123" changelist="15bad59c-09ce-4620-9266-4650f45b484c" />
+        <range start1="247" end1="248" start2="260" end2="261" changelist="d3135c19-bc9a-4e55-90f3-5a686edd2910" />
       </ranges>
     </file>
   </component>
@@ -92,8 +86,16 @@
       <updated>1650740722978</updated>
       <workItem from="1650740728499" duration="9849000" />
       <workItem from="1650750850798" duration="1113000" />
-      <workItem from="1650753249496" duration="3613000" />
+      <workItem from="1650753249496" duration="5270000" />
     </task>
+    <task id="LOCAL-00001" summary="Detection model">
+      <created>1650757565606</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1650757565606</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -110,7 +112,11 @@
       </map>
     </option>
   </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Detection model" />
+    <option name="LAST_COMMIT_MESSAGE" value="Detection model" />
+  </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/LiftOff$main.coverage" NAME="main Coverage Results" MODIFIED="1650755770693" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/LiftOff$main.coverage" NAME="main Coverage Results" MODIFIED="1650758681572" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

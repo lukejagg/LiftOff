@@ -3,7 +3,7 @@ import cv2
 import tensorflow as tf
 #from tensorflow.keras.models import load_model
 from keras.models import Sequential
-from keras.layers import Dense, Activation, SimpleRNN, Flatten, TimeDistributed, LSTM
+from keras.layers import Dense, Activation, SimpleRNN, Flatten, TimeDistributed, LSTM, Dropout
 import numpy as np
 import mediapipe as mp
 mp_drawing = mp.solutions.drawing_utils
@@ -100,14 +100,23 @@ class Callback(tf.keras.callbacks.Callback):
             print(f"Epoch: {self.epoch} loss: {logs['loss']}")
         self.counter += 1
 
-model = Sequential()
-model.add(Dense(DATA_SIZE, input_shape=(DATA_SIZE,), activation='sigmoid'))
+model = Sequential([
+    keras.Input(shape=(1, DATA_SIZE)),
+    LSTM(128),
+    Dense(2, activation="sigmoid"),
+])
+#model.add(Dense(DATA_SIZE, input_shape=(DATA_SIZE,), activation='sigmoid'))
 #model.add(SimpleRNN(DATA_SIZE*2, input_shape=(DATA_SIZE, DATA_SIZE * 2)))
-model.add(LSTM(DATA_SIZE * 2, input_shape=(DATA_SIZE,DATA_SIZE*2)))
+
+#timesteps = 1
+input_dim = DATA_SIZE #inputs.shape[1]
+model.add(LSTM(1, input_shape=(input_dim, 1), return_state=True, activation='sigmoid'))
+model.add(Dropout(0.2))
+
 #model.add(Activation('sigmoid'))
-model.add(Dense(DATA_SIZE * 2, activation='sigmoid'))
+#model.add(TimeDistributed(Dense(DATA_SIZE * 2, activation='sigmoid')))
 #model.add(Activation('sigmoid'))
-model.add(Dense(2, activation='sigmoid'))
+model.add(TimeDistributed(Dense(2, activation='sigmoid')))
 #model.add(Activation('sigmoid'))
 #opt = keras.optimizers.adadelta_v2(learning_rate=0.001) #instead of sgd
 model.compile(loss='mean_squared_error', optimizer='adam', metrics=['accuracy']) #steps_per_execution
