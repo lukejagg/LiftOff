@@ -1,5 +1,9 @@
 # AI Packages
 import cv2
+import math
+from typing import Mapping
+
+import keras.optimizers
 import tensorflow as tf
 #from tensorflow.keras.models import load_model
 from keras.models import Sequential
@@ -254,7 +258,7 @@ def packData(list):
 
 # Tracking Workflow
 cam = cv2.VideoCapture(0)
-with mp_pose.Pose(min_detection_confidence=0.5,min_tracking_confidence=0.5) as pose:
+with mp_pose.Pose(min_detection_confidence=0.75,min_tracking_confidence=0.25) as pose:
     while cam.isOpened():
         success, image = cam.read()
         if not success:
